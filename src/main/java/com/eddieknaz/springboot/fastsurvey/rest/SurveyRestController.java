@@ -1,7 +1,6 @@
 package com.eddieknaz.springboot.fastsurvey.rest;
-import com.eddieknaz.springboot.fastsurvey.entity.Option;
-import com.eddieknaz.springboot.fastsurvey.entity.Survey;
-import com.eddieknaz.springboot.fastsurvey.entity.Voter;
+import com.eddieknaz.springboot.fastsurvey.entity.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,9 +13,16 @@ import java.util.HashSet;
 @RequestMapping("/api")
 public class SurveyRestController {
 
+    @Autowired
+    HelloRepository repo;
+
+    @GetMapping("test")
+    public Hello find(){
+        return repo.findById(11).get();
+    }
 
 
-    @GetMapping("/Surveys")
+    @GetMapping("/surveys")
     public Survey getSurvey()
     {
         Voter firstVoter = new Voter("Eddie","127.56.123.11");
