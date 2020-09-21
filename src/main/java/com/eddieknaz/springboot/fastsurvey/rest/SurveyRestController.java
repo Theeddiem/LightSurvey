@@ -1,58 +1,109 @@
 package com.eddieknaz.springboot.fastsurvey.rest;
 import com.eddieknaz.springboot.fastsurvey.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class SurveyRestController {
 
     @Autowired
     HelloRepository repo;
 
+    @Autowired
+    VoterRepository voterRepo;
+//
+    @Autowired
+    OptionRepository optionRepo;
+
+    @Autowired
+    SurveyRepository surveyRepo;
+
     @GetMapping("test")
-    public Hello find(){
-        return repo.findById(11).get();
+    public void find(){
+//        List<Survey> a = surveyRepo.findAll();
+////        Survey survey = new Survey()
+//        System.out.println("-------------------------------------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------------------------------------");
+//        System.out.println(a);
+//        System.out.println("-------------------------------------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------------------------------------");
+//        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss") ;
+//        String formatted = df.format(new Date());
+//        System.out.println(formatted);
+//
+//        String uuid = UUID.randomUUID().toString();
+//        System.out.println(uuid);
+        System.out.println("localhot/test");
+
+
+    }
+    @PostMapping("/surveys")
+    public Survey addSurvey(@RequestBody Survey theSurvey)
+    {
+        System.out.println("lalala");
+        System.out.println("theSurvey   -- "+theSurvey);
+        String uuid = UUID.randomUUID().toString();
+        theSurvey.setUuid(uuid);
+        return surveyRepo.saveAndFlush(theSurvey);
+
+    }
+
+    @PutMapping("/options")
+    public void voteForOption(@RequestBody Voter theVoter, @RequestParam List<Integer> optionsId)
+    {
+
+
+        for (Integer id : optionsId)
+        {
+            System.out.println("-------------------------------------------------------------------------------------");
+            System.out.println("Id ----" + id);
+            Option theOption = optionRepo.findById(id).get();
+            System.out.println(theOption);
+            System.out.println("-------------------------------------------------------------------------------------");
+            System.out.println(theVoter);
+            System.out.println("-------------------------------------------------------------------------------------");
+            theVoter.setOptionId(id);
+            theOption.addVoter(theVoter);
+            optionRepo.saveAndFlush(theOption);
+        }
+
+
+
+    }
+
+    @GetMapping("/surveys")
+    public List<Survey> getSurveys()
+    {
+        return surveyRepo.findAll();
     }
 
 
-    @GetMapping("/surveys")
-    public Survey getSurvey()
+    @GetMapping("/surveys/{surveyUuid}")
+    public Survey getSurvey(@PathVariable String surveyUuid )
     {
-        Voter firstVoter = new Voter("Eddie","127.56.123.11");
-        Voter secondVoter = new Voter("Ron","176.13.144.15");
-        Voter thirdVoter = new Voter("Jim","134.88.21.18");
 
-        Option firstOption = new Option("Pizza");
-        Option secondOption = new Option("Hamburger");
-        Option thirdOption = new Option("Sushi");
+        Survey theSurvey = surveyRepo.findById(surveyUuid).get();
+        System.out.println("this is the survey found for MySQL" + theSurvey);
 
-        ArrayList<Option> options = new ArrayList<>();
-        options.add(firstOption);
-        options.add(secondOption);
-        options.add(thirdOption);
+        if(theSurvey == null)
+        {
+            throw new RuntimeException("Survey id not found - " + surveyUuid);
+        }
 
-        Date currentDate = new Date();
-        currentDate.getTime();
+        return theSurvey;
 
-        Survey firstSurvey = new Survey("What are we eating?",options,  currentDate.getTime());
-        int x = firstSurvey.getOptions().indexOf(firstOption);
-        System.out.println(x);
-        firstSurvey.getOptions().get(x).addVoter(firstVoter);
-        firstSurvey.getOptions().get(x).addVoter(secondVoter);
-        firstSurvey.getOptions().get(x).addVoter(thirdVoter);
+    }
 
+    @PutMapping("/surveys/{surveyUuid}")
+    public Survey updateSurvey(@RequestBody Survey theSurvey)
+    {
 
-
-
-        return  firstSurvey;
-
+        return surveyRepo.saveAndFlush(theSurvey);
     }
 
 }

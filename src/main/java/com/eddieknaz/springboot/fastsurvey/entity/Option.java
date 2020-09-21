@@ -1,35 +1,44 @@
 package com.eddieknaz.springboot.fastsurvey.entity;
 
-import java.util.HashSet;
+import javax.persistence.*;
+import java.util.*;
 
+@Entity
+@Table(name="options")
 public class Option {
 
-    private int count;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private  int id;
 
+    @Column(name="counter")
+    private int counter;
+
+    @Column(name="option_name")
     private String name;
 
-    private HashSet<Voter> voters;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "option_id")
+    private List<Voter> voters = new ArrayList<>();
 
     public Option(String name) {
         this.name = name;
-        this.count = 0;
+        this.counter = 0;
     }
 
     public Option() {
     }
 
-    public int getCount() {
-        return count;
+    public int getId() {
+        return id;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void vote()
-    {
-        this.count++;
-    }
+
 
     public String getName() {
         return name;
@@ -39,28 +48,32 @@ public class Option {
         this.name = name;
     }
 
-    public HashSet<Voter> getVoters() {
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
+    public List<Voter> getVoters() {
         return voters;
     }
 
-    public void setVoters(HashSet<Voter> voters) {
+    public void setVoters(List<Voter> voters) {
         this.voters = voters;
     }
 
     public void addVoter(Voter voter)
     {
-        if(voters==null)
-        {
-            voters = new HashSet<>();
-        }
+        counter++;
         voters.add(voter);
-        count++;
     }
 
     @Override
     public String toString() {
         return "Option{" +
-                "count=" + count +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", voters=" + voters +
                 '}';

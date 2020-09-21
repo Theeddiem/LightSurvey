@@ -1,29 +1,37 @@
 package com.eddieknaz.springboot.fastsurvey.entity;
 
+import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.List;
 
+@Entity
+@Table(name="surveys")
 public class Survey {
 
-    private String id;
-    private String question;
-    private ArrayList<Option> options;
-    private long createdlong;
+    @Id
+    @Column(name="uuid")
+    private String uuid;
 
-    public Survey(String question, ArrayList<Option> options, long createdlong) {
+    @Column(name="question")
+    private String question;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "survey_id")
+    private List<Option> options  = new ArrayList<>();;
+
+    public Survey(String question, ArrayList<Option> options) {
         this.question = question;
         this.options = options;
-        this.createdlong = createdlong;
     }
 
     public Survey(){ }
 
-    public String getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getQuestion() {
@@ -34,29 +42,22 @@ public class Survey {
         this.question = question;
     }
 
-    public ArrayList<Option> getOptions() {
+    public List<Option> getOptions() {
         return options;
     }
 
-    public void setOptions(ArrayList<Option> options) {
+    public void setOptions(List<Option> options) {
         this.options = options;
     }
 
-    public long getCreatedlong() {
-        return createdlong;
-    }
 
-    public void setCreatedlong(long createdlong) {
-        this.createdlong = createdlong;
-    }
 
     @Override
     public String toString() {
         return "Survey{" +
-                "id='" + id + '\'' +
-                ", question='" + question + '\'' +
-                ", options=" + options +
-                ", createdlong=" + createdlong +
+                "id= '" + uuid + '\'' +
+                ", question=' " + question + '\'' +
+                ", options= " + options +
                 '}';
     }
 }
