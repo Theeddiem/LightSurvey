@@ -6,6 +6,10 @@ import com.eddieknaz.springboot.fastsurvey.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 
 @RestController
@@ -20,14 +24,52 @@ public class SurveyRestController {
     SurveyRepository surveyRepo;
 
     @GetMapping("test")
-    public void find(){
+    public String find(HttpServletRequest request){
+
+        List<String>  a= new ArrayList<>();
+
+        final String[] IP_HEADER_CANDIDATES = {
+                "X-Forwarded-For",
+                "Proxy-Client-IP",
+                "WL-Proxy-Client-IP",
+                "HTTP_X_FORWARDED_FOR",
+                "HTTP_X_FORWARDED",
+                "HTTP_X_CLUSTER_CLIENT_IP",
+                "HTTP_CLIENT_IP",
+                "HTTP_FORWARDED_FOR",
+                "HTTP_FORWARDED",
+                "HTTP_VIA",
+                "REMOTE_ADDR" };
+
+
+        for (String header : IP_HEADER_CANDIDATES) {
+            String ip = request.getHeader(header);
+            if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
+                a.add(ip);
+            }
+        }
+
+        System.out.println("ja "+ request.getRemoteAddr());
+        a.add(request.getRemoteAddr());
+        String userIpAddress = request.getHeader("X-Forwarded-For");
+        System.out.println("this is else " + request.getLocalAddr());
+        try {
+            System.out.println("this is b " + InetAddress.getLocalHost().getHostAddress() );
+            a.add(InetAddress.getLocalHost().getHostAddress());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        System.out.println("this is rqeust " +request.getRemoteAddr());
+
+        a.add(request.getRemoteAddr());
+
+            return request.getRemoteAddr();
 
     }
 
     @PostMapping("/surveys")
-    public Survey addSurvey(@RequestBody Survey theSurvey)
+    public Survey addSurvey(@RequestBody Survey theSurvey, HttpServletRequest request)
     {
-
         String uuid = UUID.randomUUID().toString();
         theSurvey.setUuid(uuid);
         System.out.println("theSurvey   -- "+theSurvey);
