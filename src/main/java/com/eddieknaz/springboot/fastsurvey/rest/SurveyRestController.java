@@ -3,6 +3,8 @@ import com.eddieknaz.springboot.fastsurvey.dao.OptionRepository;
 import com.eddieknaz.springboot.fastsurvey.dao.SurveyRepository;
 import com.eddieknaz.springboot.fastsurvey.dao.VoterRepository;
 import com.eddieknaz.springboot.fastsurvey.entity.*;
+import com.eddieknaz.springboot.fastsurvey.service.SurveyService;
+import com.eddieknaz.springboot.fastsurvey.service.VoterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,97 +20,41 @@ import java.util.*;
 public class SurveyRestController {
 
     @Autowired
-    VoterRepository voterRepo;
+    private SurveyService surveyService;
 
     @Autowired
-    SurveyRepository surveyRepo;
+    private VoterService voterService;
 
     @GetMapping("test")
-    public String find(HttpServletRequest request){
-
-        List<String>  a= new ArrayList<>();
-
-        final String[] IP_HEADER_CANDIDATES = {
-                "X-Forwarded-For",
-                "Proxy-Client-IP",
-                "WL-Proxy-Client-IP",
-                "HTTP_X_FORWARDED_FOR",
-                "HTTP_X_FORWARDED",
-                "HTTP_X_CLUSTER_CLIENT_IP",
-                "HTTP_CLIENT_IP",
-                "HTTP_FORWARDED_FOR",
-                "HTTP_FORWARDED",
-                "HTTP_VIA",
-                "REMOTE_ADDR" };
-
-
-        for (String header : IP_HEADER_CANDIDATES) {
-            String ip = request.getHeader(header);
-            if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
-                a.add(ip);
-            }
-        }
-
-        System.out.println("ja "+ request.getRemoteAddr());
-        a.add(request.getRemoteAddr());
-        String userIpAddress = request.getHeader("X-Forwarded-For");
-        System.out.println("this is else " + request.getLocalAddr());
-        try {
-            System.out.println("this is b " + InetAddress.getLocalHost().getHostAddress() );
-            a.add(InetAddress.getLocalHost().getHostAddress());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        System.out.println("this is rqeust " +request.getRemoteAddr());
-
-        a.add(request.getRemoteAddr());
-
+    public String find(HttpServletRequest request)
+    {
             return request.getRemoteAddr();
-
     }
 
     @PostMapping("/surveys")
-    public Survey addSurvey(@RequestBody Survey theSurvey, HttpServletRequest request)
+    public Survey addSurvey(@RequestBody Survey survey, HttpServletRequest request)
     {
-        String uuid = UUID.randomUUID().toString();
-        theSurvey.setUuid(uuid);
-        System.out.println("theSurvey   -- "+theSurvey);
-        return surveyRepo.save(theSurvey);
+        return surveyService.addSurvey(survey,request);
     }
 
     @PostMapping("/voters")
-    public void voteForOption(@RequestBody Voter theVoter, @RequestParam List<Integer> optionsId)
+    public void voteForOption(@RequestBody Voter voter, @RequestParam List<Integer> optionsId, HttpServletRequest request)
     {
-        List<Voter> votersList = new ArrayList<>();
-
-        for (Integer id : optionsId)
-            votersList.add(new Voter(theVoter.getName(),theVoter.getIpAddress(),id));
-
-        voterRepo.saveAll(votersList);
+        voterService.voteForOption(voter, optionsId, request);
     }
 
-    @GetMapping("/surveys")
-    public List<Survey> getSurveys()
-    {
-        System.out.println("get Surveys");
-        System.out.println(surveyRepo.findAll());
-        return surveyRepo.findAll();
-    }
+//    @GetMapping("/surveys")
+//    public List<Survey> getSurveys()
+//    {
+////        System.out.println("get Surveys");
+////        System.out.println(surveyRepo.findAll());
+////        return surveyRepo.findAll();
+//    }
 
 
     @GetMapping("/surveys/{surveyUuid}")
     public Survey getSurvey(@PathVariable String surveyUuid )
     {
-
-        Survey theSurvey = surveyRepo.findById(surveyUuid).get();
-        System.out.println("this is the survey found for MySQL" + theSurvey);
-
-        if(theSurvey == null)
-        {
-            throw new RuntimeException("Survey id not found - " + surveyUuid);
-        }
-
-        return theSurvey;
-
+        return surveyService.getSurvey(surveyUuid);
     }
 }
