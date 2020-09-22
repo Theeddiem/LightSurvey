@@ -21,10 +21,10 @@ public class Voter {
     private int optionId;
 
 
-
-    public Voter(String name, String ipAddress) {
+    public Voter(String name, String ipAddress, int optionId) {
         this.name = name;
         this.ipAddress = ipAddress;
+        this.optionId = optionId;
     }
 
     public Voter() {

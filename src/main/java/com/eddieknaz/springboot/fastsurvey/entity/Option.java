@@ -12,9 +12,6 @@ public class Option {
     @Column(name="id")
     private  int id;
 
-    @Column(name="counter")
-    private int counter;
-
     @Column(name="option_name")
     private String name;
 
@@ -24,7 +21,6 @@ public class Option {
 
     public Option(String name) {
         this.name = name;
-        this.counter = 0;
     }
 
     public Option() {
@@ -48,14 +44,6 @@ public class Option {
         this.name = name;
     }
 
-    public int getCounter() {
-        return counter;
-    }
-
-    public void setCounter(int counter) {
-        this.counter = counter;
-    }
-
     public List<Voter> getVoters() {
         return voters;
     }
@@ -66,7 +54,6 @@ public class Option {
 
     public void addVoter(Voter voter)
     {
-        counter++;
         voters.add(voter);
     }
 

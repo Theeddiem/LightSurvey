@@ -1,9 +1,11 @@
 package com.eddieknaz.springboot.fastsurvey.rest;
+import com.eddieknaz.springboot.fastsurvey.dao.OptionRepository;
+import com.eddieknaz.springboot.fastsurvey.dao.SurveyRepository;
+import com.eddieknaz.springboot.fastsurvey.dao.VoterRepository;
 import com.eddieknaz.springboot.fastsurvey.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -12,73 +14,42 @@ import java.util.*;
 public class SurveyRestController {
 
     @Autowired
-    HelloRepository repo;
-
-    @Autowired
     VoterRepository voterRepo;
-//
-    @Autowired
-    OptionRepository optionRepo;
 
     @Autowired
     SurveyRepository surveyRepo;
 
     @GetMapping("test")
     public void find(){
-//        List<Survey> a = surveyRepo.findAll();
-////        Survey survey = new Survey()
-//        System.out.println("-------------------------------------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------------------------------------");
-//        System.out.println(a);
-//        System.out.println("-------------------------------------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------------------------------------");
-//        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss") ;
-//        String formatted = df.format(new Date());
-//        System.out.println(formatted);
-//
-//        String uuid = UUID.randomUUID().toString();
-//        System.out.println(uuid);
-        System.out.println("localhot/test");
-
 
     }
+
     @PostMapping("/surveys")
     public Survey addSurvey(@RequestBody Survey theSurvey)
     {
-        System.out.println("lalala");
-        System.out.println("theSurvey   -- "+theSurvey);
+
         String uuid = UUID.randomUUID().toString();
         theSurvey.setUuid(uuid);
-        return surveyRepo.saveAndFlush(theSurvey);
-
+        System.out.println("theSurvey   -- "+theSurvey);
+        return surveyRepo.save(theSurvey);
     }
 
-    @PutMapping("/options")
+    @PostMapping("/voters")
     public void voteForOption(@RequestBody Voter theVoter, @RequestParam List<Integer> optionsId)
     {
-
+        List<Voter> votersList = new ArrayList<>();
 
         for (Integer id : optionsId)
-        {
-            System.out.println("-------------------------------------------------------------------------------------");
-            System.out.println("Id ----" + id);
-            Option theOption = optionRepo.findById(id).get();
-            System.out.println(theOption);
-            System.out.println("-------------------------------------------------------------------------------------");
-            System.out.println(theVoter);
-            System.out.println("-------------------------------------------------------------------------------------");
-            theVoter.setOptionId(id);
-            theOption.addVoter(theVoter);
-            optionRepo.saveAndFlush(theOption);
-        }
+            votersList.add(new Voter(theVoter.getName(),theVoter.getIpAddress(),id));
 
-
-
+        voterRepo.saveAll(votersList);
     }
 
     @GetMapping("/surveys")
     public List<Survey> getSurveys()
     {
+        System.out.println("get Surveys");
+        System.out.println(surveyRepo.findAll());
         return surveyRepo.findAll();
     }
 
@@ -98,12 +69,4 @@ public class SurveyRestController {
         return theSurvey;
 
     }
-
-    @PutMapping("/surveys/{surveyUuid}")
-    public Survey updateSurvey(@RequestBody Survey theSurvey)
-    {
-
-        return surveyRepo.saveAndFlush(theSurvey);
-    }
-
 }
