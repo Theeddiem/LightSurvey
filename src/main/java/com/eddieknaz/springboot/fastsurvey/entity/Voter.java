@@ -63,6 +63,27 @@ public class Voter {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+        if (!(obj instanceof Voter))
+            return false;
+        Voter voter = (Voter) obj;
+        System.out.println("frist one" + voter.getIpAddress() + "second one" + this.getIpAddress());
+        return voter.getIpAddress().equals(this.getIpAddress());
+
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((ipAddress == null) ? 0 : ipAddress.hashCode());
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Voter{" +
                 "id=" + id +

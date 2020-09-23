@@ -17,7 +17,7 @@ public class Option {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "option_id")
-    private List<Voter> voters = new ArrayList<>();
+    private Set<Voter> voters = new HashSet<>();
 
     public Option(String name) {
         this.name = name;
@@ -34,8 +34,6 @@ public class Option {
         this.id = id;
     }
 
-
-
     public String getName() {
         return name;
     }
@@ -44,11 +42,11 @@ public class Option {
         this.name = name;
     }
 
-    public List<Voter> getVoters() {
+    public Set<Voter> getVoters() {
         return voters;
     }
 
-    public void setVoters(List<Voter> voters) {
+    public void setVoters(Set<Voter> voters) {
         this.voters = voters;
     }
 
