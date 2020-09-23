@@ -28,7 +28,7 @@ public class VoterServiceImpl implements VoterService {
         List<Voter> votersList = new ArrayList<>();
 
         List<Option> optionsVoted = optionRepo.findAllById(optionsId);
-        System.out.println("options I choose to vote"+ optionsVoted);
+        System.out.println("options user choose to vote"+ optionsVoted);
         for (Option option: optionsVoted )
         {
            System.out.println(option.getVoters().contains(voter));
