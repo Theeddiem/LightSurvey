@@ -15,7 +15,7 @@ public class Survey {
     @Column(name="question")
     private String question;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "survey_id")
     private List<Option> options  = new ArrayList<>();;
 
@@ -39,10 +39,12 @@ public class Survey {
     }
 
     public void setQuestion(String question) {
+        System.out.println("this is set Options");
         this.question = question;
     }
 
     public List<Option> getOptions() {
+        System.out.println("this is get Options");
         return options;
     }
 

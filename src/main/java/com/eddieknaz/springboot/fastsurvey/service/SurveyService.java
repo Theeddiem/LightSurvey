@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface SurveyService {
 
-    Survey addSurvey(@RequestBody Survey theSurvey, HttpServletRequest request);
+    Survey AddSurvey(Survey theSurvey);
 
-    Survey getSurvey(@PathVariable String surveyUuid );
+    Survey GetSurvey(String surveyUuid);
 }

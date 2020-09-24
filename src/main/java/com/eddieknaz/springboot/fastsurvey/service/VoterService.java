@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface VoterService {
 
-    void voteForOption(@RequestBody Voter voter, @RequestParam List<Integer> optionsId,  HttpServletRequest request);
+    void VoteForOption(Voter voter, List<Integer> optionsId,  HttpServletRequest request);
 }

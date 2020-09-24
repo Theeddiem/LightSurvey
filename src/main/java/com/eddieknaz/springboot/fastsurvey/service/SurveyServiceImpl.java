@@ -1,11 +1,15 @@
 package com.eddieknaz.springboot.fastsurvey.service;
 
 import com.eddieknaz.springboot.fastsurvey.dao.SurveyRepository;
+import com.eddieknaz.springboot.fastsurvey.entity.Option;
 import com.eddieknaz.springboot.fastsurvey.entity.Survey;
+import com.eddieknaz.springboot.fastsurvey.exception.BadRequestException;
+import com.eddieknaz.springboot.fastsurvey.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -15,7 +19,7 @@ public class SurveyServiceImpl implements SurveyService {
     private SurveyRepository surveyRepo;
 
     @Override
-    public Survey addSurvey(Survey theSurvey, HttpServletRequest request) {
+    public Survey AddSurvey(Survey theSurvey) {
 
         String uuid = UUID.randomUUID().toString();
         theSurvey.setUuid(uuid);
@@ -24,16 +28,21 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
-    public Survey getSurvey(String surveyUuid) {
+    public Survey GetSurvey(String surveyUuid) {
 
-        Survey survey = surveyRepo.findById(surveyUuid).get();
-        System.out.println("this is the survey found for MySQL" + survey);
+        Optional<Survey> tempSurvey = surveyRepo.findById(surveyUuid);
+        if(!tempSurvey.isPresent())
+            throw new NotFoundException("Can't find survey id: " + surveyUuid);
 
-        if(survey == null)
-        {
-            throw new RuntimeException("Survey id not found - " + surveyUuid);
-        }
+        Survey survey = tempSurvey.get();
+//        for (Option p: survey.getOptions())
+//        System.out.println(p);  {
+//
+//        }
+//        System.out.println("options size" + survey.getOptions().size());
+//        System.out.println("_+___+_______________________________________");
 
-        return survey;
+       // Collections.sort(survey.getOptions()); // sort options
+        return  survey;
     }
 }

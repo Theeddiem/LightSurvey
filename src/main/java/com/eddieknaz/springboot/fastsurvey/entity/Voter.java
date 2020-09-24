@@ -69,7 +69,6 @@ public class Voter {
         if (!(obj instanceof Voter))
             return false;
         Voter voter = (Voter) obj;
-        System.out.println("frist one" + voter.getIpAddress() + "second one" + this.getIpAddress());
         return voter.getIpAddress().equals(this.getIpAddress());
 
     }
