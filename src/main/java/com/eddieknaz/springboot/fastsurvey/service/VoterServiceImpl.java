@@ -29,21 +29,20 @@ public class VoterServiceImpl implements VoterService {
         voterIp =String.valueOf((rand.nextInt(1000)));
         voter.setIpAddress(voterIp);
 
-        List<Voter> votersList = new ArrayList<>();
-
         List<Option> optionsVoted = optionRepo.findAllById(optionsId);
-        for (Option option: optionsVoted )
+        for (Option option: optionsVoted   )
         {
             if(option.getVoters().contains(voter)) // hashSet checking o(1) if user voted already for this option.
             {
                 throw new BadRequestException("Already Voted for that option");
             }
         }
-        System.out.println("thosr are " +optionsId);
-        for (Integer id : optionsId)
-        votersList.add(new Voter(voter.getName(),voter.getIpAddress(),id));
 
-        System.out.println("count of votersList" + votersList.size());
-        voterRepo.saveAll(votersList);
+        for (Option option: optionsVoted)
+        {
+            voter.addOption(option);
+        }
+
+        voterRepo.save(voter);
     }
 }

@@ -1,6 +1,10 @@
 package com.eddieknaz.springboot.fastsurvey.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table (name="voters")
@@ -17,14 +21,21 @@ public class Voter {
     @Column(name="ip_address")
     private String ipAddress;
 
-    @Column(name="option_id")
-    private int optionId;
+    @ManyToMany(mappedBy = "voters", cascade = {CascadeType.PERSIST})
+    @JsonIgnoreProperties("voters")
+    private Set<Option> options = new HashSet<>();
 
+    public Set<Option> getOptions() {
+        return options;
+    }
 
-    public Voter(String name, String ipAddress, int optionId) {
+    public void setOptions(Set<Option> options) {
+        this.options = options;
+    }
+
+    public Voter(String name, String ipAddress) {
         this.name = name;
         this.ipAddress = ipAddress;
-        this.optionId = optionId;
     }
 
     public Voter() {
@@ -54,12 +65,18 @@ public class Voter {
         this.ipAddress = ipAddress;
     }
 
-    public int getOptionId() {
-        return optionId;
-    }
+//    public int getOptionId() {
+//        return optionId;
+//    }
+//
+//    public void setOptionId(int optionId) {
+//        this.optionId = optionId;
+//    }
 
-    public void setOptionId(int optionId) {
-        this.optionId = optionId;
+    public void addOption(Option option)
+    {
+        options.add(option);
+        option.getVoters().add(this);
     }
 
     @Override
@@ -88,7 +105,7 @@ public class Voter {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", ipAddress='" + ipAddress + '\'' +
-                ", optionId='" + optionId + '\'' +
+//                ", optionId='" + optionId + '\'' +
                 '}';
     }
 }
