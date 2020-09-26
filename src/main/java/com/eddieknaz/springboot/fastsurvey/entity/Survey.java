@@ -2,7 +2,9 @@ package com.eddieknaz.springboot.fastsurvey.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="surveys")
@@ -15,11 +17,11 @@ public class Survey {
     @Column(name="question")
     private String question;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "survey_id")
-    private List<Option> options  = new ArrayList<>();;
+    private Set<Option> options  = new HashSet<>();;
 
-    public Survey(String question, ArrayList<Option> options) {
+    public Survey(String question, Set<Option> options) {
         this.question = question;
         this.options = options;
     }
@@ -43,12 +45,12 @@ public class Survey {
         this.question = question;
     }
 
-    public List<Option> getOptions() {
-        System.out.println("this is get Options");
+    public Set<Option> getOptions() {
+        System.out.println("manytomany");
         return options;
     }
 
-    public void setOptions(List<Option> options) {
+    public void setOptions(Set<Option> options) {
         this.options = options;
     }
 

@@ -35,6 +35,7 @@ public class SurveyServiceImpl implements SurveyService {
             throw new NotFoundException("Can't find survey id: " + surveyUuid);
 
         Survey survey = tempSurvey.get();
+        System.out.println("_______________this is the survey__________" + survey);
 //        for (Option p: survey.getOptions())
 //        System.out.println(p);  {
 //

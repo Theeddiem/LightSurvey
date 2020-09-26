@@ -1,5 +1,7 @@
 package com.eddieknaz.springboot.fastsurvey.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -17,13 +19,15 @@ public class Option  implements  Comparable<Option>{
 
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "option_id")
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+////    @JoinColumn(name = "option_id")
+    @ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "option_voter",
+            joinColumns = @JoinColumn(name = "option_id"),
+            inverseJoinColumns = @JoinColumn(name = "voter_id"))
+    @JsonIgnoreProperties("options")
     private Set<Voter> voters = new HashSet<>();
-
-//    @Transient // so my sql will ignore it
-//    private int votersCount;
-
 
     public Option(String name) {
         this.name = name;
@@ -55,14 +59,13 @@ public class Option  implements  Comparable<Option>{
     }
 
     public void setVoters(Set<Voter> voters) {
-        System.out.println("insdie set");
         this.voters = voters;
     }
 
     public void addVoter(Voter voter)
     {
-        System.out.println("inside add voter");
         voters.add(voter);
+        voter.getOptions().add(this);
     }
 
 
@@ -71,10 +74,9 @@ public class Option  implements  Comparable<Option>{
         return "Option{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-//                ", votersCount=" + votersCount +
                 ", voters=" + voters +
-                 +
-                '}';
+                +
+                        '}';
     }
 
     @Override
