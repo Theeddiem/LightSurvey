@@ -44,7 +44,7 @@ public class Survey {
     }
 
     public List<Option> getOptions() {
-        System.out.println("this is get Options");
+        System.out.println("manytomany");
         return options;
     }
 
