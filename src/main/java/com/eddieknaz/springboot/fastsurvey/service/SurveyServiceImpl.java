@@ -1,16 +1,13 @@
 package com.eddieknaz.springboot.fastsurvey.service;
 
 import com.eddieknaz.springboot.fastsurvey.dao.SurveyRepository;
-import com.eddieknaz.springboot.fastsurvey.entity.Option;
 import com.eddieknaz.springboot.fastsurvey.entity.Survey;
-import com.eddieknaz.springboot.fastsurvey.exception.BadRequestException;
 import com.eddieknaz.springboot.fastsurvey.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SurveyServiceImpl implements SurveyService {
@@ -36,14 +33,10 @@ public class SurveyServiceImpl implements SurveyService {
 
         Survey survey = tempSurvey.get();
         System.out.println("_______________this is the survey__________" + survey);
-//        for (Option p: survey.getOptions())
-//        System.out.println(p);  {
-//
-//        }
-//        System.out.println("options size" + survey.getOptions().size());
-//        System.out.println("_+___+_______________________________________");
 
-       // Collections.sort(survey.getOptions()); // sort options
+        survey.setOptions(survey.getOptions().stream().distinct().sorted().collect(Collectors.toList()));
+        // sorted is using the compareTo method in Option class
+        // and using distinct because of the oneToMany hibernate bug that returns duplicate objects
         return  survey;
     }
 }

@@ -22,7 +22,7 @@ public class Voter {
     private String ipAddress;
 
     @ManyToMany(mappedBy = "voters", cascade = {CascadeType.PERSIST})
-    @JsonIgnoreProperties("voters")
+    @JsonIgnoreProperties("voters") // Help to prevent a recursive JSON FILE because we have ManyToMany
     private Set<Option> options = new HashSet<>();
 
     public Set<Option> getOptions() {
@@ -65,14 +65,6 @@ public class Voter {
         this.ipAddress = ipAddress;
     }
 
-//    public int getOptionId() {
-//        return optionId;
-//    }
-//
-//    public void setOptionId(int optionId) {
-//        this.optionId = optionId;
-//    }
-
     public void addOption(Option option)
     {
         options.add(option);
@@ -87,7 +79,6 @@ public class Voter {
             return false;
         Voter voter = (Voter) obj;
         return voter.getIpAddress().equals(this.getIpAddress());
-
     }
 
     @Override
@@ -105,7 +96,6 @@ public class Voter {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", ipAddress='" + ipAddress + '\'' +
-//                ", optionId='" + optionId + '\'' +
                 '}';
     }
 }

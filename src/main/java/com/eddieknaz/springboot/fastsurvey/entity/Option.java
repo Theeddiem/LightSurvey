@@ -1,7 +1,6 @@
 package com.eddieknaz.springboot.fastsurvey.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 import java.util.*;
 
@@ -17,10 +16,6 @@ public class Option  implements  Comparable<Option>{
     @Column(name="option_name")
     private String name;
 
-
-
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-////    @JoinColumn(name = "option_id")
     @ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
     @JoinTable(
             name = "option_voter",
@@ -43,7 +38,6 @@ public class Option  implements  Comparable<Option>{
     public void setId(int id) {
         this.id = id;
     }
-
 
     public String getName() {
         return name;
@@ -75,8 +69,7 @@ public class Option  implements  Comparable<Option>{
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", voters=" + voters +
-                +
-                        '}';
+                        '}' +'\n';
     }
 
     @Override

@@ -1,10 +1,8 @@
 package com.eddieknaz.springboot.fastsurvey.rest;
 import com.eddieknaz.springboot.fastsurvey.entity.*;
-import com.eddieknaz.springboot.fastsurvey.exception.BadRequestException;
 import com.eddieknaz.springboot.fastsurvey.exception.NotFoundException;
 import com.eddieknaz.springboot.fastsurvey.service.OptionService;
 import com.eddieknaz.springboot.fastsurvey.service.SurveyService;
-import com.eddieknaz.springboot.fastsurvey.service.VoterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;

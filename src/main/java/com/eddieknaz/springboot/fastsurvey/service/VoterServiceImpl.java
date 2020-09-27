@@ -26,22 +26,28 @@ public class VoterServiceImpl implements VoterService {
     public void VoteForOption(Voter voter, List<Integer> optionsId, HttpServletRequest request) {
         String voterIp = request.getRemoteAddr();
         Random rand = new Random();
-        voterIp =String.valueOf((rand.nextInt(1000)));
+       // voterIp =String.valueOf((rand.nextInt(1000)));
         voter.setIpAddress(voterIp);
 
-        List<Option> optionsVoted = optionRepo.findAllById(optionsId);
-        for (Option option: optionsVoted   )
-        {
-            if(option.getVoters().contains(voter)) // hashSet checking o(1) if user voted already for this option.
-            {
-                throw new BadRequestException("Already Voted for that option");
-            }
-        }
+       List<Option> optionsVoted = optionRepo.findAllById(optionsId);
+       boolean alreadyVoted = optionsVoted.stream().anyMatch(option -> option.getVoters().contains(voter));
+       if(alreadyVoted)
+           throw new BadRequestException("Already Voted for that option");
 
-        for (Option option: optionsVoted)
-        {
-            voter.addOption(option);
-        }
+//        for (Option option: optionsVoted   )
+//        {
+//            if(option.getVoters().contains(voter)) // hashSet checking o(1) if user voted already for this option.
+//            {
+//                throw new BadRequestException("Already Voted for that option");
+//            }
+//        }
+
+        optionsVoted.stream().forEach(option -> voter.addOption(option));
+
+//        for (Option option: optionsVoted)
+//        {
+//            voter.addOption(option);
+//        }
 
         voterRepo.save(voter);
     }

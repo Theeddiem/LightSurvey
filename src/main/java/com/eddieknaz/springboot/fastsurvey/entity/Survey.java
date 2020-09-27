@@ -1,5 +1,8 @@
 package com.eddieknaz.springboot.fastsurvey.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,9 +22,9 @@ public class Survey {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "survey_id")
-    private Set<Option> options  = new HashSet<>();;
+    private List<Option> options  = new ArrayList<>();;
 
-    public Survey(String question, Set<Option> options) {
+    public Survey(String question, List<Option> options) {
         this.question = question;
         this.options = options;
     }
@@ -41,27 +44,23 @@ public class Survey {
     }
 
     public void setQuestion(String question) {
-        System.out.println("this is set Options");
         this.question = question;
     }
 
-    public Set<Option> getOptions() {
-        System.out.println("manytomany");
+    public List<Option> getOptions() {
         return options;
     }
 
-    public void setOptions(Set<Option> options) {
+    public void setOptions(List<Option> options) {
         this.options = options;
     }
 
-
-
     @Override
     public String toString() {
-        return "Survey{" +
+        return "'\n'Survey: {" +
                 "id= '" + uuid + '\'' +
                 ", question=' " + question + '\'' +
-                ", options= " + options +
+                ", options= " + '\n' +  options +
                 '}';
     }
 }
