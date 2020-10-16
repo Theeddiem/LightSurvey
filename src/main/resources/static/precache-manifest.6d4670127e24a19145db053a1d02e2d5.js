@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bbb.png"
   },
   {
-    "revision": "2e26858986ad1015c390",
-    "url": "/css/app.c150bb99.css"
+    "revision": "06854da04852dc5fb6e2",
+    "url": "/css/app.2fc7f833.css"
   },
   {
     "revision": "5ee0f2d1a1e6e14d8c4d8fa7f18c3326",
@@ -32,12 +32,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/whatsAppIcon.547cd823.svg"
   },
   {
-    "revision": "325ce95f2ba3b1dd0824a2425c193e8d",
+    "revision": "bd74edf0c059bf483da3ebbd45ff72a8",
     "url": "/index.html"
   },
   {
-    "revision": "2e26858986ad1015c390",
-    "url": "/js/app.39d3fe8a.js"
+    "revision": "06854da04852dc5fb6e2",
+    "url": "/js/app.cc1f23e5.js"
   },
   {
     "revision": "b56c5af82773c9a05ef8",
