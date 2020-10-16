@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bbb.png"
   },
   {
-    "revision": "3a7b73e843bd872178cf",
-    "url": "/css/app.c5aceb45.css"
+    "revision": "e9a4819e3c2cdad2efec",
+    "url": "/css/app.952d001d.css"
   },
   {
     "revision": "5ee0f2d1a1e6e14d8c4d8fa7f18c3326",
@@ -32,16 +32,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/whatsAppIcon.547cd823.svg"
   },
   {
-    "revision": "5f12606692469a0f29e4e609f0974a41",
+    "revision": "ffa60d4d05cc68dd2cf8801c99a8c9e4",
     "url": "/index.html"
   },
   {
-    "revision": "3a7b73e843bd872178cf",
-    "url": "/js/app.8b0f97bc.js"
+    "revision": "e9a4819e3c2cdad2efec",
+    "url": "/js/app.03819b54.js"
   },
   {
-    "revision": "86f94f29b3ce7c9d89cd",
-    "url": "/js/chunk-vendors.666dc8e6.js"
+    "revision": "c5b995dcdc73686e85ad",
+    "url": "/js/chunk-vendors.d657726b.js"
   },
   {
     "revision": "1f5a198add42282c47a333a89e9e6097",
