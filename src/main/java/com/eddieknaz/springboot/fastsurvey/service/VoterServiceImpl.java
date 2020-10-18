@@ -34,20 +34,7 @@ public class VoterServiceImpl implements VoterService {
        if(alreadyVoted)
            throw new BadRequestException("Already Voted for that option");
 
-//        for (Option option: optionsVoted   )
-//        {
-//            if(option.getVoters().contains(voter)) // hashSet checking o(1) if user voted already for this option.
-//            {
-//                throw new BadRequestException("Already Voted for that option");
-//            }
-//        }
-
         optionsVoted.stream().forEach(option -> voter.addOption(option));
-
-//        for (Option option: optionsVoted)
-//        {
-//            voter.addOption(option);
-//        }
 
         voterRepo.save(voter);
     }
