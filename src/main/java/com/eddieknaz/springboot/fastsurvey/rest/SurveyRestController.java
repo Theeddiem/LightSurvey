@@ -50,6 +50,11 @@ public class SurveyRestController {
     @MessageMapping("/survey/{surveyId}")
     public Survey greeting(@DestinationVariable String surveyId) throws Exception {
         //Thread.sleep(1000); // simulated delay
-        return  surveyService.GetSurvey(surveyId);
+        try {
+            return surveyService.GetSurvey(surveyId);
+        }
+        catch ( NotFoundException ex) {
+            throw ex;//
+        }
     }
 }
