@@ -4,7 +4,11 @@ import com.eddieknaz.springboot.fastsurvey.exception.NotFoundException;
 import com.eddieknaz.springboot.fastsurvey.service.OptionService;
 import com.eddieknaz.springboot.fastsurvey.service.SurveyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
@@ -33,13 +37,19 @@ public class SurveyRestController {
     @GetMapping("/surveys/{surveyUuid}")
     public Survey getSurvey(@PathVariable String surveyUuid )
     {
-     try {
-         return surveyService.GetSurvey(surveyUuid);
-     }
-     catch ( NotFoundException ex) {
-         throw ex;
-     }
+        try {
+            return surveyService.GetSurvey(surveyUuid);
+        }
+        catch ( NotFoundException ex) {
+            throw ex;
+        }
 
 
+    }
+    @SendTo("/topic/surveys/{surveyId}")
+    @MessageMapping("/survey/{surveyId}")
+    public Survey greeting(@DestinationVariable String surveyId) throws Exception {
+        Thread.sleep(1000); // simulated delay
+        return  surveyService.GetSurvey(surveyId);
     }
 }

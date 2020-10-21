@@ -26,15 +26,17 @@ public class VoterServiceImpl implements VoterService {
     public void VoteForOption(Voter voter, List<Integer> optionsId, HttpServletRequest request) {
         String voterIp = request.getRemoteAddr();
         Random rand = new Random();
-       // voterIp =String.valueOf((rand.nextInt(1000)));
+        // voterIp =String.valueOf((rand.nextInt(1000))); // for development, try many ips
         voter.setIpAddress(voterIp);
 
        List<Option> optionsVoted = optionRepo.findAllById(optionsId);
+
        boolean alreadyVoted = optionsVoted.stream().anyMatch(option -> option.getVoters().contains(voter));
        if(alreadyVoted)
            throw new BadRequestException("Already Voted for that option");
 
         optionsVoted.stream().forEach(option -> voter.addOption(option));
+
 
         voterRepo.save(voter);
     }

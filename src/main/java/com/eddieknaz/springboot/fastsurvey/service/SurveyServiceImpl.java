@@ -26,14 +26,12 @@ public class SurveyServiceImpl implements SurveyService {
 
     @Override
     public Survey GetSurvey(String surveyUuid) {
-
+        System.out.println(surveyUuid);
         Optional<Survey> tempSurvey = surveyRepo.findById(surveyUuid);
         if(!tempSurvey.isPresent())
             throw new NotFoundException("Can't find survey id: " + surveyUuid);
 
         Survey survey = tempSurvey.get();
-        System.out.println("_______________this is the survey__________" + survey);
-
         survey.setOptions(survey.getOptions().stream().distinct().sorted().collect(Collectors.toList()));
         // sorted is using the compareTo method in Option class
         // and using distinct because of the oneToMany hibernate bug that returns duplicate objects
