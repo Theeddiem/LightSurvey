@@ -49,7 +49,7 @@ public class SurveyRestController {
     @SendTo("/topic/surveys/{surveyId}")
     @MessageMapping("/survey/{surveyId}")
     public Survey greeting(@DestinationVariable String surveyId) throws Exception {
-        //Thread.sleep(1000); // simulated delay
+        Thread.sleep(1000); // simulated delay
         try {
             return surveyService.GetSurvey(surveyId);
         }
