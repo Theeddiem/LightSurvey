@@ -32,7 +32,9 @@ public class SurveyServiceImpl implements SurveyService {
             throw new NotFoundException("Can't find survey id: " + surveyUuid);
 
         Survey survey = tempSurvey.get();
+        System.out.println("survey before sort" + survey);
         survey.setOptions(survey.getOptions().stream().distinct().sorted().collect(Collectors.toList()));
+        System.out.println("survey after sort" + survey);
         // sorted is using the compareTo method in Option class
         // and using distinct because of the oneToMany hibernate bug that returns duplicate objects
         return  survey;

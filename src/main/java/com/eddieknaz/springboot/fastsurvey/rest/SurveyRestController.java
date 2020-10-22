@@ -51,6 +51,7 @@ public class SurveyRestController {
     public Survey greeting(@DestinationVariable String surveyId) throws Exception {
         Thread.sleep(1000); // simulated delay
         try {
+            System.out.println("from socket");
             return surveyService.GetSurvey(surveyId);
         }
         catch ( NotFoundException ex) {
